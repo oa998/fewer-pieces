@@ -24,9 +24,6 @@ jobs:
           cache: pnpm
 
       - name: Install dependencies
-        run: pnpm -v
-
-      - name: Install dependencies
         run: pnpm install
 
       - name: build
