@@ -16,6 +16,9 @@ export default {
 		alias: {
 			// this will match a file
 			'$stores/*': 'src/stores'
+		},
+		paths: {
+			base: '/fewer-pieces'
 		}
 	},
 	preprocess: vitePreprocess()
