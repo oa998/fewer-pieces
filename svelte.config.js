@@ -15,7 +15,8 @@ export default {
 		}),
 		alias: {
 			// this will match a file
-			'$stores/*': 'src/stores'
+			'$gameplay/*': 'src/gameplay',
+			'$components/*': 'src/components'
 		},
 		paths: {
 			base: '/fewer-pieces'
