@@ -1,6 +1,6 @@
 <script lang="ts">
-	import bag from '$stores/bag';
-
+	// import bag from '$stores/bag';
+	let x = { abc: 0 };
 	function increment(b: { abc: number }) {
 		b.abc++;
 		return b;
@@ -12,7 +12,7 @@
 
 <button
 	on:click={() => {
-		$bag = increment($bag);
+		x = increment(x);
 		localStorage.setItem('game', JSON.stringify($bag));
-	}}>update {$bag.abc}</button
+	}}>update {x.abc}</button
 >
