@@ -1,8 +1,15 @@
 <script lang="ts">
 	import Mobile from '$components/mobile.svelte';
-	import Modal from '$components/modal.svelte';
+	import InPlayIntruderModal from '$components/nemesis/InPlayIntruderModal.svelte';
 	import InPlayToken from '$components/nemesis/InPlayToken.svelte';
-	import gameState, { Intruders, reset, type IntruderToken } from '$gameplay/nemesis/index';
+	import SurpriseAttackPenant from '$components/nemesis/SurpriseAttackPenant.svelte';
+	import Token from '$components/nemesis/Token.svelte';
+	import gameState, {
+		DevelopmentRules,
+		EncounterMessages,
+		type IntruderToken
+	} from '$gameplay/nemesis/GameState';
+	import mechanics from '$gameplay/nemesis/mechanics';
 	import Icon from '@iconify/svelte';
 
 	/*
@@ -15,69 +22,45 @@
 	
 	*/
 
-	let showModal = false;
+	const develop = () => ($gameState = mechanics.develop($gameState));
 
-	$: develop = () => {
-		if ($gameState.inBag.length === 0) return;
-		const intruder = JSON.parse(JSON.stringify($gameState.inBag.popRandom() as IntruderToken));
-		$gameState.developing.push(intruder);
-		$gameState = JSON.parse(JSON.stringify($gameState));
-		localStorage.setItem('game', JSON.stringify($gameState));
-	};
+	const developDone = () => ($gameState = mechanics.developEnd($gameState));
 
-	$: developDone = () => {
-		if ($gameState.developing.length === 0) return;
-		const intruder = $gameState.developing.pop() as IntruderToken;
-		$gameState.inBag.push(intruder);
-		$gameState = JSON.parse(JSON.stringify($gameState));
-		localStorage.setItem('game', JSON.stringify($gameState));
-	};
+	const encounter = () => ($gameState = mechanics.encounter($gameState));
 
-	$: encounter = () => {
-		if ($gameState.inBag.length === 0) return;
-		// Should never be able to pop a null token here - should always have at least a blank token in bag
-		const intruder = JSON.parse(JSON.stringify($gameState.inBag.popRandom() as IntruderToken));
-		$gameState.encounter = [intruder]; // Always save over encounter. Only one at a time.
-		$gameState = JSON.parse(JSON.stringify($gameState));
-		localStorage.setItem('game', JSON.stringify($gameState));
-	};
+	const encounterDone = () => ($gameState = mechanics.encounterDone($gameState));
 
-	$: encounterDone = () => {
-		if ($gameState.encounter.length === 0) return;
-		const lastEncounter = $gameState.encounter.pop() as IntruderToken;
-		$gameState.encounter = [];
-		// return the blank to the bag else put the Intruder into play
-		if (lastEncounter.name === Intruders.BLANK) {
-			$gameState.inBag.push(lastEncounter);
-		} else {
-			$gameState.inPlay.push(lastEncounter);
-		}
-		$gameState = JSON.parse(JSON.stringify($gameState));
-		localStorage.setItem('game', JSON.stringify($gameState));
-	};
+	const resetGame = () => ($gameState = mechanics.resetGame(4));
+
+	const returnToBag = (id: string) => ($gameState = mechanics.returnToBag($gameState, id));
+	const kill = async (id: string) => ($gameState = mechanics.kill($gameState, id));
+
+	const showClickedIntruder = (e: CustomEvent<IntruderToken>) =>
+		($gameState = mechanics.clickInPlayIntruder($gameState, e.detail.id));
+
+	const hideClickedIntruder = () => ($gameState = mechanics.unclickInPlayIntruder($gameState));
+
+	$: {
+		console.log({ gameState: $gameState });
+	}
 </script>
 
 <Mobile>
 	<div slot="image" class="relative">
-		<button class="absolute top-1 left-1 p-1" on:click={reset}>
+		<button class="absolute top-1 left-1 p-1" on:click={resetGame}>
 			<Icon icon="ri:refresh-line" style="font-size:large" color="gray" />
 		</button>
-		<button
-			class="absolute top-1 right-1 p-1"
-			on:click={() => {
-				showModal = true;
-			}}
-		>
+		<button class="absolute top-1 right-1 p-1">
 			<Icon icon="ion:eye-outline" style="font-size:large" color="gray" />
 		</button>
 		<img src="nemesis2.webp" alt="nemesis" class="w-full h-auto landscape:max-w-xs" />
 	</div>
 
 	<div slot="left-side-panel">
-		<div class="flex flex-col gap-2 items-stretch">
+		<div class="flex flex-col gap-2 items-stretch p-2">
 			<div class="text-blue-400 text-center">{`Tokens in bag: ${$gameState.inBag.length}`}</div>
 			<button
-				class="text-white border border-red-900 bg-red-800 p-3 disabled:bg-slate-600 disabled:text-slate-800"
+				class="text-white border border-yellow-700 bg-yellow-600 p-3 disabled:bg-slate-600 disabled:text-slate-800"
 				style="border-radius: 10pt;"
 				disabled={$gameState.developing.length > 0 ||
 					$gameState.inBag.length === 0 ||
@@ -86,7 +69,7 @@
 			>
 
 			<button
-				class="text-white border border-violet-900 bg-violet-800 p-3 disabled:bg-slate-600 disabled:text-slate-800"
+				class="text-white border border-red-900 bg-red-800 p-3 disabled:bg-slate-600 disabled:text-slate-800"
 				style="border-radius: 10pt;"
 				disabled={$gameState.encounter.length > 0 || $gameState.inBag.length === 0}
 				on:click={encounter}>Encounter</button
@@ -95,66 +78,62 @@
 	</div>
 
 	<div slot="right-side-panel" class="flex flex-col text-yellow-300 p-3 h-full justify-between">
-		<div class="flex flex-row justify-around">
+		<div class="flex flex-row portrait:flex-col justify-around items-center gap-1">
+			<!-- Development card -->
 			{#if $gameState.developing.length > 0}
-				<div class="card">
+				<div class="card landscape:h-full">
 					<button class="close-card" on:click={developDone}>✕</button>
-					<div>Develop:</div>
-					<img
-						src={$gameState.developing[0].src}
-						alt={$gameState.developing[0].name}
-						class="w-min max-h-32 token lg shadow-xl"
-						style={`transform: rotate(${Math.floor(Math.random() * 360)}deg);`}
-					/>
-					<div class="font-bold text-red-600">{$gameState.developing[0].name}</div>
-					<div>{`Threat: ${$gameState.developing[0].threat}`}</div>
+					<div class="portrait:hidden">
+						<Token intruder={$gameState.developing[0]} size="lg" color="yellow" />
+					</div>
+					<div class="landscape:hidden">
+						<Token intruder={$gameState.developing[0]} size="md" color="yellow" />
+					</div>
+
+					<div class="italic text-xs text-center px-2">
+						{DevelopmentRules[$gameState.developing[0].name].message}
+					</div>
 				</div>
 			{/if}
 
+			<!-- Encounter card -->
 			{#if $gameState.encounter.length > 0}
-				<div class="card">
+				<div class="card landscape:h-full">
 					<button class="close-card" on:click={encounterDone}>✕</button>
-					<div>Encounter:</div>
-					<img
-						src={$gameState.encounter[0].src}
-						alt={$gameState.encounter[0].name}
-						class="w-min max-h-32 token lg shadow-xl"
-						style={`transform: rotate(${Math.floor(Math.random() * 360)}deg);`}
-					/>
-					<div class="font-bold text-red-600">{$gameState.encounter[0].name}</div>
-					<div>{`Threat: ${$gameState.encounter[0].threat}`}</div>
+					<div class="w-max relative">
+						<Token intruder={$gameState.encounter[0]} size="sm" color="red" />
+						<div class="absolute right-0 bottom-0">
+							<SurpriseAttackPenant threat={$gameState.encounter[0].threat} />
+						</div>
+					</div>
+					{#if EncounterMessages[$gameState.encounter[0].name]}
+						<div class="italic text-xs text-center px-2">
+							{EncounterMessages[$gameState.encounter[0].name].message}
+						</div>
+					{/if}
 				</div>
 			{/if}
 		</div>
-		<div class="flex flex-row max-h-20 p-3 gap-3 overflow-scroll">
+		<div class="flex flex-row min-h-[6rem] max-h-2 p-3 gap-3 overflow-scroll">
 			{#each $gameState.inPlay as intruder (intruder.id)}
-				<InPlayToken {intruder} />
+				<InPlayToken {intruder} on:intruderClicked={showClickedIntruder} />
 			{/each}
 		</div>
 	</div>
 </Mobile>
-{#if showModal}
-	<Modal
-		onClose={() => {
-			showModal = false;
-		}}
+{#if $gameState.clickedInPlayID}
+	<InPlayIntruderModal
+		intruderId={$gameState.clickedInPlayID}
+		on:killIntruder={(e) => kill(e.detail)}
+		on:returnToBag={(e) => returnToBag(e.detail)}
+		onClose={() => hideClickedIntruder()}
 	/>
 {/if}
 
 <style>
-	.token {
-		border-radius: 100%;
-	}
-	.token.sm {
-		box-shadow: 0px 0px 10px;
-	}
-	.token.lg {
-		box-shadow: 0px 0px 30px;
-	}
-
 	.card {
 		border-radius: 10px;
-		@apply border border-yellow-700 p-4 relative;
+		@apply border border-yellow-700 p-4 relative flex flex-col items-center gap-2 flex-1 w-full justify-center;
 	}
 
 	.card > .close-card {

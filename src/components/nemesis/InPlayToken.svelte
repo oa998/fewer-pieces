@@ -1,22 +1,23 @@
 <script lang="ts">
-	import type { IntruderToken } from '$gameplay/nemesis';
+	import type { IntruderToken } from '$gameplay/nemesis/GameState';
+	import { createEventDispatcher } from 'svelte';
+	import Token from './Token.svelte';
 
 	export let intruder: IntruderToken;
+	const dispatcher = createEventDispatcher();
 </script>
 
-<div class="relative">
-	<img
-		src={intruder.src}
-		alt={intruder.name}
-		class="token sm max-h-[90%]"
-		style={`transform: rotate(${Math.floor(Math.random() * 360)}deg);`}
-	/>
+<button
+	on:click={() => dispatcher('intruderClicked', intruder)}
+	class="relative flex flex-row aspect-square w-auto h-full outline-none"
+>
+	<Token {intruder} size="sm" color="red" />
 	<div
 		class="absolute circle bottom-0 right-0 bg-red-700 text-white h-full max-h-[20pt] w-full max-w-[20pt] text-center"
 	>
-		0
+		{intruder.damage}
 	</div>
-</div>
+</button>
 
 <style>
 	.circle {

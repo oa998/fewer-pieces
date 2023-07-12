@@ -23,17 +23,21 @@
 <dialog data-modal bind:this={modal}>
 	<div>
 		<button class="close-card" on:click={onClose}>✕</button>
-		<div>This is a modal</div>
+		<slot />
 	</div>
 </dialog>
 
 <style>
+	dialog {
+		border-radius: 10px;
+		@apply bg-gray-900;
+	}
 	dialog::backdrop {
 		background-color: hsla(0, 0%, 0%, 0.7);
 	}
 	.close-card {
 		border-radius: 3px;
 		line-height: 10px;
-		@apply absolute top-2 right-2 border border-yellow-700 p-1;
+		@apply absolute top-2 right-2 text-yellow-300 border border-yellow-700 p-1 outline-none;
 	}
 </style>
