@@ -13,6 +13,6 @@
 <button
 	on:click={() => {
 		x = increment(x);
-		localStorage.setItem('game', JSON.stringify($bag));
+		// localStorage.setItem('game', JSON.stringify($bag));
 	}}>update {x.abc}</button
 >
