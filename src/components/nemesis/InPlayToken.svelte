@@ -20,6 +20,9 @@
 </button>
 
 <style>
+	button {
+		-webkit-tap-highlight-color: transparent;
+	}
 	.circle {
 		border-radius: 100%;
 	}

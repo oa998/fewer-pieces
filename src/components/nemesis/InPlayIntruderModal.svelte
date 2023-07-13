@@ -6,7 +6,6 @@
 
 	$: onClose = () => {
 		if (!$gameState.clickedInPlayID) return;
-		console.log({ isOpen: !!$gameState.clickedInPlayID, r: Math.random() });
 		$gameState = mechanics.unclickInPlayIntruder($gameState);
 	};
 

@@ -79,14 +79,12 @@ class Mechanics {
 
 	@storeLocal('game')
 	clickInPlayIntruder(gs: GameState, tokenId: string) {
-		console.log('clicking', { tokenId });
 		gs.clickedInPlayID = tokenId;
 		return gs;
 	}
 
 	@storeLocal('game')
 	unclickInPlayIntruder(gs: GameState) {
-		console.log('unclicking', gs.clickedInPlayID);
 		gs.clickedInPlayID = undefined;
 		return gs;
 	}

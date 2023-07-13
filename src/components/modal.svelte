@@ -4,11 +4,21 @@
 	export let onClose: () => void;
 	export let isOpen: boolean;
 
+	let close = () => {};
+
 	$: if (modal) {
+		close = () => {
+			modal.classList.add('close');
+			setTimeout(() => {
+				modal.classList.remove('close');
+				onClose();
+				modal.close();
+			}, 90);
+		};
+
 		document.addEventListener('keydown', (ev) => {
 			if (ev.key === 'Escape') {
-				console.log('clicked outside');
-				modal.close();
+				close();
 			}
 		});
 		modal.addEventListener('click', (e) => {
@@ -19,27 +29,29 @@
 				e.clientY < dims.top ||
 				e.clientY > dims.bottom;
 			if (clickedOutside) {
-				modal.close();
+				close();
 			}
 		});
-		if (isOpen) {
+		if (isOpen && !modal.open) {
 			modal.showModal();
-		} else if (!isOpen) {
-			modal.close();
+		} else {
+			close();
 		}
 	}
 </script>
 
-<dialog open={!!isOpen} on:close={onClose} data-modal bind:this={modal}>
+<dialog bind:this={modal}>
 	<div>
-		<form method="dialog">
+		<div class="close" />
+		<!-- <form method="dialog">
 			<button class="close-card">x</button>
-		</form>
+		</form> -->
+		<button class="close-card" on:click={close}>x</button>
 		<slot />
 	</div>
 </dialog>
 
-<style>
+<style global>
 	.close-card {
 		border-radius: 3px;
 		line-height: 10px;
@@ -47,26 +59,36 @@
 	}
 
 	dialog {
-		/* display: block;
-		pointer-events: none;
-		opacity: 0;
-		transition: all 3.5s;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center; */
+		position: absolute;
+		top: 0;
+		left: 0;
 		border-radius: 10px;
 		@apply bg-gray-900;
 	}
-	dialog[open] {
-		animation: myFadeIn 5s ease normal;
+	dialog[open]:not(.close) {
+		animation: myFadeIn 0.2s ease normal;
+		animation-iteration-count: 1;
 	}
 	@keyframes myFadeIn {
 		from {
 			opacity: 0;
+			top: 100%;
 		}
 		to {
 			opacity: 1;
+			top: 0px;
+		}
+	}
+	.close {
+		animation: fadeOut 0.1s ease normal;
+	}
+	@keyframes fadeOut {
+		from {
+			top: 0;
+		}
+		to {
+			top: 100%;
+			opacity: 0;
 		}
 	}
 	dialog::backdrop {

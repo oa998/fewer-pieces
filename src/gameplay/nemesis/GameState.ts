@@ -152,7 +152,6 @@ export function putRandomIntruderIntoBag(state: GameState, name: string) {
 }
 
 export const newGame = (players: GameState['players'] = 3) => {
-	console.log('new game with', players, 'players');
 	const allIntruders = resetAllIntruders();
 	const startingCounts = {
 		[Intruders.BLANK]: 1,
@@ -193,7 +192,6 @@ if (browser && localStorage?.getItem('game')) {
 		gameState.set(newGame(4));
 	}
 } else {
-	console.log('else else');
 	gameState.set(newGame(2));
 }
 
