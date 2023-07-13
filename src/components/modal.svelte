@@ -2,12 +2,16 @@
 	let modal: HTMLDialogElement;
 
 	export let onClose: () => void;
+	export let isOpen: string | boolean;
 
 	$: if (modal) {
-		// always display the modal upon rendering this component.
-		// "hide" the modal by not rendering it ({#if show} ... {/if})
-		modal.showModal();
-
+		document.addEventListener('keydown', (ev) => {
+			if (ev.key === 'Escape' && modal.open) {
+				console.log('clicked outside');
+				modal.close();
+				onClose();
+			}
+		});
 		modal.addEventListener('click', (e) => {
 			const dims = modal.getBoundingClientRect();
 			const clickedOutside =
@@ -15,8 +19,18 @@
 				e.clientX > dims.right ||
 				e.clientY < dims.top ||
 				e.clientY > dims.bottom;
-			if (clickedOutside) onClose();
+			if (clickedOutside && modal.open) {
+				console.log('clicked outside');
+				modal.close();
+				onClose();
+			}
 		});
+		if (isOpen && !modal.open) {
+			modal.showModal();
+		} else if (!isOpen && modal.open) {
+			modal.close();
+			onClose();
+		}
 	}
 </script>
 

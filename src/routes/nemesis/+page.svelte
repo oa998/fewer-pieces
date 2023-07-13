@@ -32,13 +32,8 @@
 
 	const resetGame = () => ($gameState = mechanics.resetGame(4));
 
-	const returnToBag = (id: string) => ($gameState = mechanics.returnToBag($gameState, id));
-	const kill = async (id: string) => ($gameState = mechanics.kill($gameState, id));
-
 	const showClickedIntruder = (e: CustomEvent<IntruderToken>) =>
 		($gameState = mechanics.clickInPlayIntruder($gameState, e.detail.id));
-
-	const hideClickedIntruder = () => ($gameState = mechanics.unclickInPlayIntruder($gameState));
 
 	$: {
 		console.log({ gameState: $gameState });
@@ -121,14 +116,8 @@
 		</div>
 	</div>
 </Mobile>
-{#if $gameState.clickedInPlayID}
-	<InPlayIntruderModal
-		intruderId={$gameState.clickedInPlayID}
-		on:killIntruder={(e) => kill(e.detail)}
-		on:returnToBag={(e) => returnToBag(e.detail)}
-		onClose={() => hideClickedIntruder()}
-	/>
-{/if}
+
+<InPlayIntruderModal />
 
 <style>
 	.card {

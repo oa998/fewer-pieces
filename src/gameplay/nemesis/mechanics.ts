@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/ban-types */
+import { browser } from '$app/environment';
 import {
 	DevelopmentRules,
 	Intruders,
@@ -16,7 +17,7 @@ function storeLocal(key: string) {
 		descriptor.value = function (this: any, gs: GameState, ...args: any[]) {
 			const gsCopy = JSON.parse(JSON.stringify(gs));
 			const result = originalMethod.apply(this, [gsCopy, ...args]);
-			localStorage.setItem(key, JSON.stringify(result));
+			if (browser) localStorage.setItem(key, JSON.stringify(result));
 			return result;
 		};
 

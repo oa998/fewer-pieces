@@ -2,41 +2,42 @@
 	import Modal from '$components/modal.svelte';
 	import gameState, { type GameState, type IntruderToken } from '$gameplay/nemesis/GameState';
 	import mechanics from '$gameplay/nemesis/mechanics';
-	import { createEventDispatcher } from 'svelte';
 	import Token from './Token.svelte';
 
-	export let onClose: () => void;
-	export let intruderId: IntruderToken['id'];
-
-	const dispatcher = createEventDispatcher();
-
-	let selectedIntruder = $gameState.inPlay.find(
-		(intruder) => intruder.id === intruderId
-	) as GameState['inPlay'][number];
-
-	$: selectedIntruder = $gameState.inPlay.find(
-		(intruder) => intruder.id === intruderId
-	) as GameState['inPlay'][number];
-
-	// Always initialize note to the stored value else it will delete the not upon mount
-	let note = selectedIntruder.note;
-
-	$: setDamageIntruder = (damageChange: 1 | -1) => {
-		$gameState = mechanics.changeDamage($gameState, intruderId, damageChange);
+	$: onClose = () => {
+		if (!$gameState.clickedInPlayID) return;
+		console.log({ isOpen: !!$gameState.clickedInPlayID, r: Math.random() });
+		$gameState = mechanics.unclickInPlayIntruder($gameState);
 	};
 
-	$: {
-		// when note changes, update it
-		$gameState = mechanics.setNote($gameState, intruderId, note);
+	let selectedIntruder: GameState['inPlay'][number];
+	let note: GameState['inPlay'][number]['note'];
+	$: if (!!$gameState.clickedInPlayID) {
+		selectedIntruder = $gameState.inPlay.find(
+			(i) => i.id === $gameState.clickedInPlayID
+		) as IntruderToken;
+		note = selectedIntruder.note;
+		$gameState = mechanics.setNote($gameState, $gameState.clickedInPlayID, note);
 	}
+
+	const setDamageIntruder = (damage: 1 | -1) => {
+		$gameState = mechanics.changeDamage($gameState, $gameState.clickedInPlayID as string, damage);
+	};
+
+	const kill = (id: string) => {
+		$gameState = mechanics.kill($gameState, $gameState.clickedInPlayID as string);
+	};
+
+	const returnToBag = (id: string) => {
+		$gameState = mechanics.returnToBag($gameState, $gameState.clickedInPlayID as string);
+	};
 </script>
 
-{#if selectedIntruder}
-	<Modal {onClose}>
+<Modal isOpen={!!$gameState.clickedInPlayID} {onClose}>
+	{#if selectedIntruder}
 		<div class="flex flex-col gap-10">
 			<div class="flex flex-row gap-5">
 				<Token intruder={selectedIntruder} size="lg" color="red" />
-				<!-- <img src={selectedIntruder.src} alt={selectedIntruder.id} class="max-h-32" /> -->
 				<div class="flex flex-col justify-around">
 					<div>
 						<div class="text-center">Damage</div>
@@ -49,24 +50,18 @@
 				</div>
 			</div>
 			<div class="flex flex-col gap-3 text-sm">
-				<input
-					bind:value={note}
-					placeholder="note"
-					maxlength="120"
-					class="py-1 px-2 bg-slate-700"
-				/>
-				<button
-					class="py-1 px-2 bg-red-600 radius"
-					on:click={() => dispatcher('killIntruder', selectedIntruder.id)}>Kill</button
+				<input placeholder="note" maxlength="120" class="py-1 px-2 bg-slate-700" />
+				<button class="py-1 px-2 bg-red-600 radius" on:click={() => kill(selectedIntruder.id)}
+					>Kill</button
 				>
 				<button
 					class="py-1 px-2 bg-blue-800 radius"
-					on:click={() => dispatcher('returnToBag', selectedIntruder.id)}>Return to bag</button
+					on:click={() => returnToBag(selectedIntruder.id)}>Return to bag</button
 				>
 			</div>
 		</div>
-	</Modal>
-{/if}
+	{/if}
+</Modal>
 
 <style>
 	* {
