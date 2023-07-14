@@ -41,9 +41,14 @@
 
 <Modal isOpen={!!$gameState.clickedInPlayID} {onClose}>
 	{#if selectedIntruder}
-		<div class="flex flex-col gap-10">
+		<div class="flex flex-col gap-8 landscape:gap-4">
 			<div class="flex flex-row gap-5">
-				<Token intruder={selectedIntruder} size="lg" color="red" />
+				<div class="landscape:hidden">
+					<Token intruder={selectedIntruder} size="lg" color="red" />
+				</div>
+				<div class="portrait:hidden">
+					<Token intruder={selectedIntruder} size="sm" color="red" />
+				</div>
 				<div class="flex flex-col justify-around">
 					<div>
 						<div class="text-center">Damage</div>
@@ -55,7 +60,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="flex flex-col gap-3 text-sm">
+			<div class="flex flex-col justify-end gap-3 text-sm">
 				<input
 					placeholder="note"
 					maxlength="120"

@@ -57,7 +57,7 @@
 	.close-card {
 		border-radius: 3px;
 		line-height: 10px;
-		@apply absolute top-2 right-2 text-yellow-300 border border-yellow-700 p-1 outline-none;
+		@apply absolute top-2 right-2 text-yellow-300 border border-yellow-700 p-1 pb-2 outline-none;
 	}
 
 	dialog {
