@@ -12,4 +12,18 @@
 	>
 		%sveltekit.body%
 	</body>
+	<script>
+		const urls = [
+			'AdultOfficial.webp',
+			'BlankOfficial.webp',
+			'BreederOfficial.webp',
+			'CreeperOfficial.webp',
+			'LarvaOfficial.webp',
+			'QueenOfficial.webp'
+		];
+		urls.forEach((url) => {
+			const i = new Image();
+			i.src = url;
+		});
+	</script>
 </html>

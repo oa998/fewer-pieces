@@ -5,19 +5,26 @@
 	import Token from './Token.svelte';
 
 	$: onClose = () => {
-		if (!$gameState.clickedInPlayID) return;
+		if (!$gameState.clickedInPlayID) return; // removing this creates infinite renders
 		$gameState = mechanics.unclickInPlayIntruder($gameState);
 	};
 
 	let selectedIntruder: GameState['inPlay'][number];
-	let note: GameState['inPlay'][number]['note'];
+
 	$: if (!!$gameState.clickedInPlayID) {
 		selectedIntruder = $gameState.inPlay.find(
 			(i) => i.id === $gameState.clickedInPlayID
 		) as IntruderToken;
-		note = selectedIntruder.note;
-		$gameState = mechanics.setNote($gameState, $gameState.clickedInPlayID, note);
 	}
+
+	const noteinput = (i: Event) => {
+		if (!!$gameState.clickedInPlayID)
+			$gameState = mechanics.setNote(
+				$gameState,
+				$gameState.clickedInPlayID,
+				(i.target as HTMLInputElement).value
+			);
+	};
 
 	const setDamageIntruder = (damage: 1 | -1) => {
 		$gameState = mechanics.changeDamage($gameState, $gameState.clickedInPlayID as string, damage);
@@ -49,7 +56,13 @@
 				</div>
 			</div>
 			<div class="flex flex-col gap-3 text-sm">
-				<input placeholder="note" maxlength="120" class="py-1 px-2 bg-slate-700" />
+				<input
+					placeholder="note"
+					maxlength="120"
+					class="py-1 px-2 bg-slate-700"
+					value={selectedIntruder.note || ''}
+					on:input={noteinput}
+				/>
 				<button class="py-1 px-2 bg-red-600 radius" on:click={() => kill(selectedIntruder.id)}
 					>Kill</button
 				>

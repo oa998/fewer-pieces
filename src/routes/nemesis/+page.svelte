@@ -34,6 +34,8 @@
 
 	const showClickedIntruder = (e: CustomEvent<IntruderToken>) =>
 		($gameState = mechanics.clickInPlayIntruder($gameState, e.detail.id));
+
+	// $: console.log($gameState);
 </script>
 
 <Mobile>

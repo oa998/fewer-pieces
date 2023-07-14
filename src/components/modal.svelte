@@ -28,13 +28,15 @@
 				e.clientX > dims.right ||
 				e.clientY < dims.top ||
 				e.clientY > dims.bottom;
+
 			if (clickedOutside) {
 				close();
 			}
 		});
+
 		if (isOpen && !modal.open) {
 			modal.showModal();
-		} else {
+		} else if (!isOpen) {
 			close();
 		}
 	}
