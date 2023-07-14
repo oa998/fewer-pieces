@@ -1,7 +1,7 @@
 import { browser } from '$app/environment';
 import { writable } from 'svelte/store';
 
-const version = 13;
+const version = 2;
 
 export type IntruderToken = {
 	name: string;
