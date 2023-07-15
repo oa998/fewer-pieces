@@ -2,6 +2,7 @@
 	import Mobile from '$components/mobile.svelte';
 	import InPlayIntruderModal from '$components/nemesis/InPlayIntruderModal.svelte';
 	import InPlayToken from '$components/nemesis/InPlayToken.svelte';
+	import LogsModal from '$components/nemesis/LogsModal.svelte';
 	import SurpriseAttackPenant from '$components/nemesis/SurpriseAttackPenant.svelte';
 	import Token from '$components/nemesis/Token.svelte';
 	import gameState, {
@@ -11,6 +12,7 @@
 	} from '$gameplay/nemesis/GameState';
 	import mechanics from '$gameplay/nemesis/mechanics';
 	import Icon from '@iconify/svelte';
+	import NewGameModal from './../../components/nemesis/NewGameModal.svelte';
 
 	/*
 		New game
@@ -30,21 +32,26 @@
 
 	const encounterDone = () => ($gameState = mechanics.encounterDone($gameState));
 
-	const resetGame = () => ($gameState = mechanics.resetGame(4));
+	const resetGame = () => ($gameState = mechanics.toggleNewGamePrompt($gameState));
+
+	const toggleLogs = () => ($gameState = mechanics.toggleLogs($gameState));
 
 	const showClickedIntruder = (e: CustomEvent<IntruderToken>) =>
 		($gameState = mechanics.clickInPlayIntruder($gameState, e.detail.id));
 
+	// $: console.log(`\n.......\n` + $gameState.log.map((x) => '- ' + x).join('\n'));
 	// $: console.log($gameState);
 </script>
 
 <Mobile>
 	<div slot="image" class="relative">
-		<button class="absolute top-1 left-1 p-1" on:click={resetGame}>
-			<Icon icon="ri:refresh-line" style="font-size:large" color="gray" />
+		<button class="absolute top-1 left-1 p-1 flex flex-col items-center" on:click={resetGame}>
+			<Icon icon="ri:refresh-line" style="font-size:large" color="white" />
+			<span class="text-xs text-white">New</span>
 		</button>
-		<button class="absolute top-1 right-1 p-1">
-			<Icon icon="ion:eye-outline" style="font-size:large" color="gray" />
+		<button class="absolute top-1 right-1 p-1 flex flex-col items-center" on:click={toggleLogs}>
+			<Icon icon="octicon:log-24" style="font-size:large" color="white" />
+			<span class="text-xs text-white">Logs</span>
 		</button>
 		<img src="nemesis2.webp" alt="nemesis" class="w-full h-auto landscape:max-w-xs" />
 	</div>
@@ -75,7 +82,9 @@
 			<!-- Development card -->
 			{#if $gameState.developing.length > 0}
 				<div class="card landscape:h-full">
-					<button class="close-card" on:click={developDone}>✕</button>
+					<button class="close-card-x flex justify-center items-center" on:click={developDone}
+						><span class="leading-4">✕</span>
+					</button>
 					<div class="portrait:hidden">
 						<Token intruder={$gameState.developing[0]} size="lg" color="yellow" />
 					</div>
@@ -92,7 +101,9 @@
 			<!-- Encounter card -->
 			{#if $gameState.encounter.length > 0}
 				<div class="card landscape:h-full">
-					<button class="close-card" on:click={encounterDone}>✕</button>
+					<button class="close-card-x flex justify-center items-center" on:click={encounterDone}
+						><span class="leading-4">✕</span>
+					</button>
 					<div class="w-max relative">
 						<Token intruder={$gameState.encounter[0]} size="sm" color="red" />
 						<div class="absolute right-0 bottom-0">
@@ -116,6 +127,8 @@
 </Mobile>
 
 <InPlayIntruderModal />
+<LogsModal />
+<NewGameModal />
 
 <style>
 	.card {
@@ -123,9 +136,10 @@
 		@apply border border-yellow-700 p-4 relative flex flex-col items-center gap-2 flex-1 w-full justify-center;
 	}
 
-	.card > .close-card {
-		border-radius: 3px;
-		line-height: 10px;
-		@apply absolute top-2 right-2 border border-yellow-700 p-1;
+	.card > .close-card-x {
+		border-radius: 4px;
+		width: 20px;
+		height: 20px;
+		@apply absolute top-2 right-2 text-yellow-300 border border-yellow-700 outline-none text-sm;
 	}
 </style>

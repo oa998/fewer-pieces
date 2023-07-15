@@ -43,21 +43,27 @@
 </script>
 
 <dialog bind:this={modal}>
-	<div>
-		<div class="close" />
-		<!-- <form method="dialog">
-			<button class="close-card">x</button>
-		</form> -->
-		<button class="close-card" on:click={close}>x</button>
-		<slot />
+	<!-- using 'close' class here because the global style isn't working -->
+	<div class="close relative">
+		<div
+			class="flex flex-row w-full justify-end sticky top-0 right-2 bg-gray-900 overflow-scroll py-2 pr-2"
+		>
+			<button class="close-card-x flex justify-center items-center" on:click={close}>
+				<span class="leading-4">✕</span>
+			</button>
+		</div>
+		<div class="px-2 pb-2">
+			<slot />
+		</div>
 	</div>
 </dialog>
 
 <style global>
-	.close-card {
-		border-radius: 3px;
-		line-height: 10px;
-		@apply absolute top-2 right-2 text-yellow-300 border border-yellow-700 p-1 pb-2 outline-none;
+	.close-card-x {
+		border-radius: 4px;
+		width: 20px;
+		height: 20px;
+		@apply text-yellow-300 border border-yellow-700 outline-none;
 	}
 
 	dialog {
@@ -65,7 +71,7 @@
 		top: 0;
 		left: 0;
 		border-radius: 10px;
-		@apply bg-gray-900;
+		@apply bg-gray-900 p-0;
 	}
 	dialog[open]:not(.close) {
 		animation: myFadeIn 0.2s ease normal;

@@ -1,7 +1,7 @@
 import { browser } from '$app/environment';
 import { writable } from 'svelte/store';
 
-const version = 3;
+const version = 33;
 
 export type IntruderToken = {
 	name: string;
@@ -21,6 +21,9 @@ export type GameState = {
 	encounter: IntruderToken[];
 	remainingTokens: IntruderToken[];
 	dead: IntruderToken[];
+	log: string[];
+	logsOpen: boolean;
+	startNewGame: boolean;
 	version: number;
 };
 
@@ -170,6 +173,9 @@ export const newGame = (players: GameState['players'] = 3) => {
 		encounter: [],
 		remainingTokens: allIntruders,
 		dead: [],
+		log: [],
+		logsOpen: false,
+		startNewGame: true,
 		version
 	};
 
@@ -209,7 +215,7 @@ export const DevelopmentRules: { [key: string]: { message: string; action: Devel
 		}
 	},
 	[Intruders.LARVA]: {
-		message: 'Remove this token from the Intruder bag and add 1 Adult token to the Intruder bag',
+		message: 'Remove this token from the Intruder bag and add 1 Adult token to the Intruder bag.',
 		action: (state) => {
 			const updated = putRandomIntruderIntoBag(state, Intruders.ADULT);
 			const larva = updated.developing.pop() as IntruderToken; // should be the larva token
@@ -218,7 +224,7 @@ export const DevelopmentRules: { [key: string]: { message: string; action: Devel
 		}
 	},
 	[Intruders.CREEPER]: {
-		message: 'Remove this token from the Intruder bag and add 1 Breeder token to the Intruder bag',
+		message: 'Remove this token from the Intruder bag and add 1 Breeder token to the Intruder bag.',
 		action: (state) => {
 			const updated = putRandomIntruderIntoBag(state, Intruders.BREEDER);
 			const creeper = updated.developing.pop() as IntruderToken; // should be the creeper token

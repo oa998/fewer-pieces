@@ -4,9 +4,18 @@
 	import mechanics from '$gameplay/nemesis/mechanics';
 	import Token from './Token.svelte';
 
+	let note: string | undefined;
+	let damage: number;
+	let opened = false;
+
 	$: onClose = () => {
 		if (!$gameState.clickedInPlayID) return; // removing this creates infinite renders
+		$gameState = mechanics.setNote($gameState, $gameState.clickedInPlayID, note);
+		note = '';
+		$gameState = mechanics.setDamage($gameState, $gameState.clickedInPlayID as string, damage);
+		damage = 0;
 		$gameState = mechanics.unclickInPlayIntruder($gameState);
+		opened = false;
 	};
 
 	let selectedIntruder: GameState['inPlay'][number];
@@ -15,19 +24,14 @@
 		selectedIntruder = $gameState.inPlay.find(
 			(i) => i.id === $gameState.clickedInPlayID
 		) as IntruderToken;
+		if (!opened) {
+			({ note, damage } = selectedIntruder);
+		}
+		opened = true;
 	}
 
-	const noteinput = (i: Event) => {
-		if (!!$gameState.clickedInPlayID)
-			$gameState = mechanics.setNote(
-				$gameState,
-				$gameState.clickedInPlayID,
-				(i.target as HTMLInputElement).value
-			);
-	};
-
-	const setDamageIntruder = (damage: 1 | -1) => {
-		$gameState = mechanics.changeDamage($gameState, $gameState.clickedInPlayID as string, damage);
+	const setDamageIntruder = (dmg: 1 | -1) => {
+		damage += dmg;
 	};
 
 	const kill = (id: string) => {
@@ -54,7 +58,7 @@
 						<div class="text-center">Damage</div>
 						<div class="flex flex-row gap-2">
 							<button class="calcButton radius" on:click={() => setDamageIntruder(-1)}>-</button>
-							<div>{selectedIntruder.damage}</div>
+							<div>{damage}</div>
 							<button class="calcButton radius" on:click={() => setDamageIntruder(1)}>+</button>
 						</div>
 					</div>
@@ -65,8 +69,7 @@
 					placeholder="note"
 					maxlength="120"
 					class="py-1 px-2 bg-slate-700"
-					value={selectedIntruder.note || ''}
-					on:input={noteinput}
+					bind:value={note}
 				/>
 				<button class="py-1 px-2 bg-red-600 radius" on:click={() => kill(selectedIntruder.id)}
 					>Kill</button

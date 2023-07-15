@@ -38,7 +38,9 @@ class Mechanics {
 	@storeLocal('game')
 	developEnd(gs: GameState) {
 		if (gs.developing.length === 0) return gs;
-		return DevelopmentRules[gs.developing[0].name].action(gs);
+		const { message, action } = DevelopmentRules[gs.developing[0].name];
+		this.captureLog(gs, `Development: Drew ${gs.developing[0].name}. ${message}`);
+		return action(gs);
 	}
 
 	@storeLocal('game')
@@ -59,8 +61,13 @@ class Mechanics {
 		if (lastEncounter.name === Intruders.BLANK) {
 			gs.inBag.push(lastEncounter);
 			putRandomIntruderIntoBag(gs, Intruders.ADULT);
+			this.captureLog(gs, `Encounter: Drew a blank. ${Intruders.ADULT} added to bag.`);
 		} else {
 			gs.inPlay.push(lastEncounter);
+			this.captureLog(
+				gs,
+				`Encounter: ${lastEncounter.name} put into play. Sneak attack value: ${lastEncounter.threat}.`
+			);
 		}
 		return gs;
 	}
@@ -73,6 +80,7 @@ class Mechanics {
 		const intruder = gs.inPlay[index];
 		gs.inPlay.splice(index, 1);
 		gs.dead.push(intruder);
+		this.captureLog(gs, `Killed ${intruder.name}.`);
 		delete gs.clickedInPlayID;
 		return gs;
 	}
@@ -94,16 +102,24 @@ class Mechanics {
 		if (gs.inPlay.length === 0) return gs;
 		const index = gs.inPlay.findIndex((i) => i.id === tokenId);
 		if (index < 0) return gs;
+		if (gs.inPlay[index].note === note) return gs; // do nothing if no change
 		gs.inPlay[index].note = note;
+		this.captureLog(gs, `Set note on ${gs.inPlay[index].name} to "${gs.inPlay[index].note}".`);
 		return gs;
 	}
 
 	@storeLocal('game')
-	changeDamage(gs: GameState, tokenId: string, damageChange: -1 | 1) {
+	setDamage(gs: GameState, tokenId: string, damage: number) {
 		if (gs.inPlay.length === 0) return gs;
 		const index = gs.inPlay.findIndex((i) => i.id === tokenId);
 		if (index < 0) return gs;
-		gs.inPlay[index].damage = Math.max(0, Math.min(20, gs.inPlay[index].damage + damageChange));
+		const startDamage = gs.inPlay[index].damage;
+		if (damage === startDamage) return gs; // do nothing if no change
+		gs.inPlay[index].damage = damage;
+		this.captureLog(
+			gs,
+			`Damage on ${gs.inPlay[index].name} changed from ${startDamage} to ${gs.inPlay[index].damage}.`
+		);
 		return gs;
 	}
 
@@ -113,6 +129,7 @@ class Mechanics {
 		const index = gs.inPlay.findIndex((i) => i.id === tokenId);
 		if (index < 0) return gs;
 		const intruder = gs.inPlay[index];
+		this.captureLog(gs, `Returned ${intruder.name} to bag.`);
 		intruder.damage = 0;
 		delete intruder.note;
 		gs.inPlay.splice(index, 1);
@@ -122,8 +139,28 @@ class Mechanics {
 	}
 
 	@storeLocal('game')
-	resetGame(players: GameState['players']) {
-		return newGame(players);
+	toggleNewGamePrompt(gs: GameState) {
+		gs.startNewGame = !gs.startNewGame;
+		return gs;
+	}
+
+	@storeLocal('game')
+	newGame(players: GameState['players']) {
+		const gs = newGame(players);
+		gs.startNewGame = false;
+		this.captureLog(gs, `New game with ${players} players.`);
+		return gs;
+	}
+
+	@storeLocal('game')
+	toggleLogs(gs: GameState) {
+		gs.logsOpen = !gs.logsOpen;
+		return gs;
+	}
+
+	// not store local. Used in other mechanics methods
+	captureLog(gs: GameState, message: string) {
+		gs.log.push(message);
 	}
 }
 
