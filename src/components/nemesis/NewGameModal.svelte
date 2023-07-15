@@ -51,6 +51,6 @@
 	}
 
 	button.submit {
-		@apply bg-yellow-600 text-black font-bold py-4;
+		@apply border border-yellow-700 bg-slate-900 text-yellow-400 font-bold py-4;
 	}
 </style>

@@ -11,7 +11,7 @@
 
 <Modal isOpen={!!$gameState.logsOpen} {onClose}>
 	{#if $gameState.logsOpen}
-		<div class="flex flex-col gap-8 landscape:gap-4">
+		<div class="flex flex-col gap-8 landscape:gap-4 min-w-[80vw] min-h-[10vh]">
 			{#each $gameState.log as log}
 				<div>{log}</div>
 			{/each}

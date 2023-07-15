@@ -60,7 +60,7 @@
 		<div class="flex flex-col gap-2 items-stretch p-2">
 			<div class="text-blue-400 text-center">{`Tokens in bag: ${$gameState.inBag.length}`}</div>
 			<button
-				class="text-white border border-yellow-700 bg-yellow-600 p-3 disabled:bg-slate-600 disabled:text-slate-800"
+				class="text-white border border-yellow-700 bg-slate-900 p-3 disabled:border-gray-800 disabled:bg-gray-950 disabled:text-gray-800"
 				style="border-radius: 10pt;"
 				disabled={$gameState.developing.length > 0 ||
 					$gameState.inBag.length === 0 ||
@@ -69,7 +69,7 @@
 			>
 
 			<button
-				class="text-white border border-red-900 bg-red-800 p-3 disabled:bg-slate-600 disabled:text-slate-800"
+				class="text-white border border-yellow-700 bg-red-950 p-3 disabled:border-gray-800 disabled:bg-gray-950 disabled:text-gray-800"
 				style="border-radius: 10pt;"
 				disabled={$gameState.encounter.length > 0 || $gameState.inBag.length === 0}
 				on:click={encounter}>Encounter</button
@@ -118,7 +118,9 @@
 				</div>
 			{/if}
 		</div>
-		<div class="flex flex-row min-h-[6rem] max-h-2 p-3 gap-3 overflow-y-hidden overflow-x-scroll">
+		<div
+			class="flex flex-row min-h-[6rem] max-h-2 p-3 gap-3 overflow-y-hidden overflow-x-scroll mb-6"
+		>
 			{#each $gameState.inPlay as intruder (intruder.id)}
 				<InPlayToken {intruder} on:intruderClicked={showClickedIntruder} />
 			{/each}
@@ -161,5 +163,9 @@
 		width: 20px;
 		height: 20px;
 		@apply absolute top-2 right-2 text-yellow-300 border border-yellow-700 outline-none text-sm;
+	}
+
+	button {
+		-webkit-tap-highlight-color: transparent;
 	}
 </style>

@@ -45,7 +45,7 @@
 
 <Modal isOpen={!!$gameState.clickedInPlayID} {onClose}>
 	{#if selectedIntruder}
-		<div class="flex flex-col gap-8 landscape:gap-4">
+		<div class="flex flex-col gap-8 landscape:gap-4 px-3">
 			<div class="flex flex-row gap-5">
 				<div class="landscape:hidden">
 					<Token intruder={selectedIntruder} size="lg" color="red" />
@@ -71,11 +71,12 @@
 					class="py-1 px-2 bg-slate-700"
 					bind:value={note}
 				/>
-				<button class="py-1 px-2 bg-red-600 radius" on:click={() => kill(selectedIntruder.id)}
-					>Kill</button
+				<button
+					class="py-1 px-2 border border-yellow-700 bg-red-950 radius"
+					on:click={() => kill(selectedIntruder.id)}>Kill</button
 				>
 				<button
-					class="py-1 px-2 bg-blue-800 radius"
+					class="py-1 px-2 border border-yellow-700 bg-slate-900 radius"
 					on:click={() => returnToBag(selectedIntruder.id)}>Return to bag</button
 				>
 			</div>
