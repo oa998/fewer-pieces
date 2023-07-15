@@ -81,15 +81,15 @@
 		<div class="flex flex-row portrait:flex-col justify-around items-center gap-1">
 			<!-- Development card -->
 			{#if $gameState.developing.length > 0}
-				<div class="card landscape:h-full">
+				<div class="card develop landscape:h-full">
 					<button class="close-card-x flex justify-center items-center" on:click={developDone}
 						><span class="leading-4">✕</span>
 					</button>
-					<div class="portrait:hidden">
+					<div class={`${$gameState.encounter.length > 0 ? 'hidden' : 'portrait:hidden'}`}>
 						<Token intruder={$gameState.developing[0]} size="lg" color="yellow" />
 					</div>
-					<div class="landscape:hidden">
-						<Token intruder={$gameState.developing[0]} size="md" color="yellow" />
+					<div class={`${$gameState.encounter.length > 0 ? '' : 'landscape:hidden'}`}>
+						<Token intruder={$gameState.developing[0]} size="sm" color="yellow" />
 					</div>
 
 					<div class="italic text-xs text-center px-2">
@@ -100,7 +100,7 @@
 
 			<!-- Encounter card -->
 			{#if $gameState.encounter.length > 0}
-				<div class="card landscape:h-full">
+				<div class="card encounter landscape:h-full">
 					<button class="close-card-x flex justify-center items-center" on:click={encounterDone}
 						><span class="leading-4">✕</span>
 					</button>
@@ -118,7 +118,7 @@
 				</div>
 			{/if}
 		</div>
-		<div class="flex flex-row min-h-[6rem] max-h-2 p-3 gap-3 overflow-scroll">
+		<div class="flex flex-row min-h-[6rem] max-h-2 p-3 gap-3 overflow-y-hidden overflow-x-scroll">
 			{#each $gameState.inPlay as intruder (intruder.id)}
 				<InPlayToken {intruder} on:intruderClicked={showClickedIntruder} />
 			{/each}
@@ -133,7 +133,17 @@
 <style>
 	.card {
 		border-radius: 10px;
-		@apply border border-yellow-700 p-4 relative flex flex-col items-center gap-2 flex-1 w-full justify-center;
+		@apply border border-yellow-700 p-4 relative flex flex-col items-center gap-2 w-full justify-center;
+	}
+
+	.card.develop {
+		flex: 3;
+	}
+
+	.card.encounter {
+		/* @apply flex-1; */
+		width: max-content;
+		flex: 1;
 	}
 
 	.card > .close-card-x {
