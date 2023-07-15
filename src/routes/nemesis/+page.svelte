@@ -141,9 +141,19 @@
 	}
 
 	.card.encounter {
-		/* @apply flex-1; */
-		width: max-content;
 		flex: 1;
+	}
+
+	@media (orientation: landscape) {
+		.card.encounter {
+			width: max-content;
+		}
+	}
+
+	@media (orientation: portrait) {
+		.card.encounter {
+			width: 100%;
+		}
 	}
 
 	.card > .close-card-x {
