@@ -45,7 +45,7 @@
 
 <Modal isOpen={!!$gameState.clickedInPlayID} {onClose}>
 	{#if selectedIntruder}
-		<div class="flex flex-col gap-8 landscape:gap-4 px-3 content-center landscape:min-h-[70vh]">
+		<div class="flex flex-col gap-8 landscape:gap-4 px-3 content-center landscape:min-h-[90vh]">
 			<div class="flex flex-row gap-5">
 				<div class="landscape:hidden">
 					<Token intruder={selectedIntruder} size="lg" color="red" />
