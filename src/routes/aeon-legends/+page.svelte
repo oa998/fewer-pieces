@@ -61,29 +61,31 @@
 		<div class="flex flex-row gap-2 p-2 h-full justify-center py-10">
 			<button
 				on:click={() => $grimholdHealth--}
-				class="h-full w-[10%] border border-white rounded-lg">{'<'}</button
+				class="h-full w-[20%] border border-white border-opacity-30 rounded-lg">{'<'}</button
 			>
-			<button class="h-full w-[80%] flex flex-col justify-center items-center">
+			<button class="h-full w-[60%] flex flex-col justify-center items-center">
 				<div class="text-[6em] font-extrabold">{$grimholdHealth}</div>
 				<div class="text-3xl">Grimhold</div>
 			</button>
 			<button
 				on:click={() => $grimholdHealth++}
-				class="h-full w-[10%] border border-white rounded-lg">{'>'}</button
+				class="h-full w-[20%] border border-white border-opacity-30 rounded-lg">{'>'}</button
 			>
 		</div>
 	</div>
 	<div class="h-[33vh]">
 		<div class="flex flex-row gap-2 p-2 h-full justify-center py-10">
-			<button on:click={() => $bossHealth--} class="h-full w-[10%] border border-white rounded-lg"
-				>{'<'}</button
+			<button
+				on:click={() => $bossHealth--}
+				class="h-full w-[20%] border border-white rounded-lg border-opacity-30">{'<'}</button
 			>
-			<button class="h-full w-[80%] flex flex-col justify-center items-center">
+			<button class="h-full w-[60%] flex flex-col justify-center items-center">
 				<div class="text-[6em] font-extrabold">{$bossHealth}</div>
 				<div class="text-3xl">Boss</div>
 			</button>
-			<button on:click={() => $bossHealth++} class="h-full w-[10%] border border-white rounded-lg"
-				>{'>'}</button
+			<button
+				on:click={() => $bossHealth++}
+				class="h-full w-[20%] border border-white rounded-lg border-opacity-30">{'>'}</button
 			>
 		</div>
 	</div>
