@@ -41,7 +41,7 @@
 
 	// $: console.log(`\n.......\n` + $gameState.log.map((x) => '- ' + x).join('\n'));
 	// $: console.log($gameState);
-	const getit =
+	// const getit =
 </script>
 
 <Mobile>
