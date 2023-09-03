@@ -26,6 +26,9 @@
 	let index = 0;
 	$: {
 		index = $turn % 6;
+		if (index === 0) {
+			$players = randomPlayers();
+		}
 		player = $players[index];
 	}
 
@@ -33,8 +36,8 @@
 	const bossHealth = writable(70);
 </script>
 
-<div class="flex flex-col landscape:flex-row main bg" style="flex: 1 1 auto">
-	<div class="h-[33vh]">
+<div class="flex flex-col landscape:flex-row main bg py-10" style="flex: 1 1 auto">
+	<div class="h-[30vh]">
 		<button on:click={() => ($turn += 1)} class="w-full h-full flex flex-col items-center p-3">
 			<div class="flex flex-row gap-5 p-3 rounded-full bg-opacity-30 bg-white items-center">
 				{#each $players as p, i (i)}
@@ -57,7 +60,7 @@
 			{/key}
 		</button>
 	</div>
-	<div class="h-[33vh]">
+	<div class="h-[30vh]">
 		<div class="flex flex-row gap-2 p-2 h-full justify-center py-10">
 			<button
 				on:click={() => $grimholdHealth--}
@@ -73,7 +76,7 @@
 			>
 		</div>
 	</div>
-	<div class="h-[33vh]">
+	<div class="h-[30vh]">
 		<div class="flex flex-row gap-2 p-2 h-full justify-center py-10">
 			<button
 				on:click={() => $bossHealth--}
