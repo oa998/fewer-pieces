@@ -3,11 +3,12 @@
 	import { writable } from 'svelte/store';
 
 	type Players = 'Emme' | 'Ralf' | 'Nemesis';
-	const originalPlayers: Players[] = ['Emme', 'Emme', 'Ralf', 'Ralf', 'Nemesis', 'Nemesis'];
+	const originalPlayers: Players[] = ['Emme', 'Emme', 'Ralf', 'Ralf', 'Nemesis', 'Assault'];
 	const colors = {
 		['Emme']: 'lime',
 		['Ralf']: 'red',
-		['Nemesis']: 'black'
+		['Nemesis']: 'black',
+		['Assault']: 'purple'
 	};
 
 	function randomPlayers() {
@@ -54,8 +55,8 @@
 				{/each}
 			</div>
 			{#key $turn}
-				<div class="h-[70%] text-[5em] flex items-center show">
-					{player}
+				<div class="h-[70%] flex items-center show relative">
+					<span class="text-[5em]">{player}</span>
 				</div>
 			{/key}
 		</button>
