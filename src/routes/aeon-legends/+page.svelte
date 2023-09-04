@@ -3,7 +3,7 @@
 	import { writable } from 'svelte/store';
 
 	type Players = 'Emme' | 'Ralf' | 'Nemesis';
-	const originalPlayers: Players[] = ['Emme', 'Emme', 'Ralf', 'Ralf', 'Nemesis', 'Assault'];
+	const originalPlayers: Players[] = ['Emme', 'Emme', 'Ralf', 'Ralf', 'Xaxos', 'Xaxos'];
 	const colors = {
 		['Emme']: 'lime',
 		['Ralf']: 'red',
