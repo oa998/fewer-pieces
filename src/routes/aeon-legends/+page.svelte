@@ -2,13 +2,13 @@
 	import Icon from '@iconify/svelte';
 	import { writable } from 'svelte/store';
 
-	type Players = 'Emme' | 'Ralf' | 'Nemesis';
-	const originalPlayers: Players[] = ['Emme', 'Emme', 'Ralf', 'Ralf', 'Xaxos', 'Xaxos'];
+	type Players = 'Zach' | 'Zach' | 'Boss';
+	const originalPlayers: Players[] = ['Alex', 'Alex', 'Zach', 'Zach', 'Boss', 'Boss'];
 	const colors = {
-		['Emme']: 'lime',
-		['Ralf']: 'red',
-		['Nemesis']: 'black',
-		['Assault']: 'purple'
+		['Alex']: 'lime',
+		['Zach']: 'red',
+		// ['Boss']: 'black',
+		['Boss']: 'purple'
 	};
 
 	function randomPlayers() {
