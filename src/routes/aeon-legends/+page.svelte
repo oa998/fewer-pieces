@@ -6,9 +6,9 @@
 	const originalPlayers: Players[] = ['Alex', 'Alex', 'Zach', 'Zach', 'Boss', 'Boss'];
 	const colors = {
 		['Alex']: 'lime',
-		['Zach']: 'red',
+		['Zach']: '#ff9700',
 		// ['Boss']: 'black',
-		['Boss']: 'purple'
+		['Boss']: 'white'
 	};
 
 	function randomPlayers() {
@@ -33,7 +33,7 @@
 		player = $players[index];
 	}
 
-	const grimholdHealth = writable(30);
+	const graveholdHealth = writable(30);
 	const bossHealth = writable(70);
 </script>
 
@@ -56,7 +56,7 @@
 			</div>
 			{#key $turn}
 				<div class="h-[70%] flex items-center show relative">
-					<span class="text-[5em]">{player}</span>
+					<span class="text-[5em] italic" style={`color: ${colors[player]}`}>{player}</span>
 				</div>
 			{/key}
 		</button>
@@ -64,15 +64,15 @@
 	<div class="h-[30vh]">
 		<div class="flex flex-row gap-2 p-2 h-full justify-center py-10">
 			<button
-				on:click={() => $grimholdHealth--}
+				on:click={() => $graveholdHealth--}
 				class="h-full w-[20%] border border-white border-opacity-30 rounded-lg">{'<'}</button
 			>
 			<button class="h-full w-[60%] flex flex-col justify-center items-center">
-				<div class="text-[6em] font-extrabold">{$grimholdHealth}</div>
-				<div class="text-3xl">Grimhold</div>
+				<div class="text-[6em] font-extrabold">{$graveholdHealth}</div>
+				<div class="text-3xl">Gravehold</div>
 			</button>
 			<button
-				on:click={() => $grimholdHealth++}
+				on:click={() => $graveholdHealth++}
 				class="h-full w-[20%] border border-white border-opacity-30 rounded-lg">{'>'}</button
 			>
 		</div>
@@ -100,8 +100,8 @@
 		@apply text-white;
 	}
 	.bg {
-		background-color: #41281b;
-		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 2000 1500'%3E%3Cdefs%3E%3CradialGradient id='a'%3E%3Cstop offset='0' stop-color='%23000' stop-opacity='.4'/%3E%3Cstop offset='1' stop-color='%23000' stop-opacity='0'/%3E%3C/radialGradient%3E%3Cg id='b'%3E%3Crect fill='url(%23a)' fill-opacity='.9' x='-1000' y='750' width='4000' height='100'/%3E%3Crect fill-opacity='.9' x='-1000' y='-700' width='4000' height='1500'/%3E%3C/g%3E%3Cg id='c'%3E%3Cg transform='rotate(10 0 0)' style='transform-origin:center'%3E%3Cuse href='%23b' style='transform-origin:center'/%3E%3C/g%3E%3Cg transform='rotate(-10 0 0)' style='transform-origin:center'%3E%3Cuse href='%23b' transform='' style='transform-origin:center'/%3E%3C/g%3E%3C/g%3E%3C/defs%3E%3Crect fill='%2341281B' width='100%25' height='100%25'/%3E%3Cg transform='' style='transform-origin:center'%3E%3Cg transform='' style='transform-origin:center'%3E%3Cuse fill='%2344371f' href='%23c' y='0'/%3E%3Cuse fill='%2341472b' href='%23c' y='-200'/%3E%3Cuse fill='%233b563f' href='%23c' y='-400'/%3E%3Cuse fill='%2333645a' href='%23c' y='-600'/%3E%3Cuse fill='%23347077' href='%23c' y='-800'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+		background-color: #442233;
+		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1500 1500'%3E%3Cg transform='rotate(46.8 750 750)'%3E%3Cg transform='translate(45 45)'%3E%3Cg transform='scale(0.97)'%3E%3Ccircle r='2000' fill='%2350213d'%3E%3CanimateTransform attributeName='transform' type='scale' repeatCount='indefinite' dur='20s' begin='0s' values='1%3B1.1%3B1' keySplines='.5 0 .5 1%3B0.5 0 .5 1' calcMode='spline'%3E%3C/animateTransform%3E%3C/circle%3E%3Ccircle r='1800' fill='%235b1f49'%3E%3CanimateTransform attributeName='transform' type='scale' repeatCount='indefinite' dur='20s' begin='-0.3s' values='1%3B1.1%3B1' keySplines='.5 0 .5 1%3B0.5 0 .5 1' calcMode='spline'%3E%3C/animateTransform%3E%3C/circle%3E%3Ccircle r='1600' fill='%23641d57'%3E%3CanimateTransform attributeName='transform' type='scale' repeatCount='indefinite' dur='20s' begin='-0.6s' values='1%3B1.1%3B1' keySplines='.5 0 .5 1%3B0.5 0 .5 1' calcMode='spline'%3E%3C/animateTransform%3E%3C/circle%3E%3Ccircle r='1400' fill='%236c1b66'%3E%3CanimateTransform attributeName='transform' type='scale' repeatCount='indefinite' dur='20s' begin='-0.8999999999999999s' values='1%3B1.1%3B1' keySplines='.5 0 .5 1%3B0.5 0 .5 1' calcMode='spline'%3E%3C/animateTransform%3E%3C/circle%3E%3Ccircle r='1200' fill='%23721b77'%3E%3CanimateTransform attributeName='transform' type='scale' repeatCount='indefinite' dur='20s' begin='-1.2s' values='1%3B1.1%3B1' keySplines='.5 0 .5 1%3B0.5 0 .5 1' calcMode='spline'%3E%3C/animateTransform%3E%3C/circle%3E%3Ccircle r='1000' fill='%23751d8a'%3E%3CanimateTransform attributeName='transform' type='scale' repeatCount='indefinite' dur='20s' begin='-1.5s' values='1%3B1.1%3B1' keySplines='.5 0 .5 1%3B0.5 0 .5 1' calcMode='spline'%3E%3C/animateTransform%3E%3C/circle%3E%3Ccircle r='800' fill='%2374229f'%3E%3CanimateTransform attributeName='transform' type='scale' repeatCount='indefinite' dur='20s' begin='-1.7999999999999998s' values='1%3B1.1%3B1' keySplines='.5 0 .5 1%3B0.5 0 .5 1' calcMode='spline'%3E%3C/animateTransform%3E%3C/circle%3E%3Ccircle r='600' fill='%236f2ab5'%3E%3CanimateTransform attributeName='transform' type='scale' repeatCount='indefinite' dur='20s' begin='-2.1s' values='1%3B1.1%3B1' keySplines='.5 0 .5 1%3B0.5 0 .5 1' calcMode='spline'%3E%3C/animateTransform%3E%3C/circle%3E%3Ccircle r='400' fill='%236333cd'%3E%3CanimateTransform attributeName='transform' type='scale' repeatCount='indefinite' dur='20s' begin='-2.4s' values='1%3B1.1%3B1' keySplines='.5 0 .5 1%3B0.5 0 .5 1' calcMode='spline'%3E%3C/animateTransform%3E%3C/circle%3E%3Ccircle r='200' fill='%234A3EE5'%3E%3CanimateTransform attributeName='transform' type='scale' repeatCount='indefinite' dur='20s' begin='-2.6999999999999997s' values='1%3B1.1%3B1' keySplines='.5 0 .5 1%3B0.5 0 .5 1' calcMode='spline'%3E%3C/animateTransform%3E%3C/circle%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
 		background-attachment: fixed;
 		background-size: cover;
 	}
