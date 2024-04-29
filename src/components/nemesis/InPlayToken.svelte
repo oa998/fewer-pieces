@@ -26,10 +26,4 @@
 	.circle {
 		border-radius: 100%;
 	}
-	.token {
-		border-radius: 100%;
-	}
-	.token.sm {
-		@apply shadow-[0_0_20px_0px_rgba(0,0,0,1)] shadow-red-500;
-	}
 </style>

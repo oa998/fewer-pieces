@@ -24,9 +24,9 @@
 		selectedIntruder = $gameState.inPlay.find(
 			(i) => i.id === $gameState.clickedInPlayID
 		) as IntruderToken;
-		if (!opened) {
-			({ note, damage } = selectedIntruder);
-		}
+		// if (!opened) {
+		({ note, damage } = selectedIntruder);
+		// }
 		opened = true;
 	}
 
@@ -44,44 +44,46 @@
 </script>
 
 <Modal isOpen={!!$gameState.clickedInPlayID} {onClose}>
-	{#if selectedIntruder}
-		<div class="flex flex-col gap-8 landscape:gap-2 px-3 content-center">
-			<div class="flex flex-row gap-5">
-				<div class="landscape:hidden">
-					<Token intruder={selectedIntruder} size="lg" color="red" />
-				</div>
-				<div class="portrait:hidden">
-					<Token intruder={selectedIntruder} size="sm" color="red" />
-				</div>
-				<div class="flex flex-col justify-around">
-					<div>
-						<div class="text-center">Damage</div>
-						<div class="flex flex-row gap-2">
-							<button class="calcButton radius" on:click={() => setDamageIntruder(-1)}>-</button>
-							<div>{damage}</div>
-							<button class="calcButton radius" on:click={() => setDamageIntruder(1)}>+</button>
+	{#key $gameState.clickedInPlayID}
+		{#if selectedIntruder}
+			<div class="flex flex-col gap-8 landscape:gap-2 px-3 content-center">
+				<div class="flex flex-row gap-5">
+					<div class="landscape:hidden">
+						<Token intruder={selectedIntruder} size="lg" color="red" />
+					</div>
+					<div class="portrait:hidden">
+						<Token intruder={selectedIntruder} size="sm" color="red" />
+					</div>
+					<div class="flex flex-col justify-around">
+						<div>
+							<div class="text-center">Damage</div>
+							<div class="flex flex-row gap-2">
+								<button class="calcButton radius" on:click={() => setDamageIntruder(-1)}>-</button>
+								<div>{damage}</div>
+								<button class="calcButton radius" on:click={() => setDamageIntruder(1)}>+</button>
+							</div>
 						</div>
 					</div>
 				</div>
+				<div class="flex flex-col justify-end gap-3 text-sm">
+					<input
+						placeholder="note"
+						maxlength="120"
+						class="py-1 px-2 bg-slate-700"
+						bind:value={note}
+					/>
+					<button
+						class="py-1 px-2 border border-yellow-700 bg-red-950 radius"
+						on:click={() => kill(selectedIntruder.id)}>Kill</button
+					>
+					<button
+						class="py-1 px-2 border border-yellow-700 bg-slate-900 radius"
+						on:click={() => returnToBag(selectedIntruder.id)}>Return to bag</button
+					>
+				</div>
 			</div>
-			<div class="flex flex-col justify-end gap-3 text-sm">
-				<input
-					placeholder="note"
-					maxlength="120"
-					class="py-1 px-2 bg-slate-700"
-					bind:value={note}
-				/>
-				<button
-					class="py-1 px-2 border border-yellow-700 bg-red-950 radius"
-					on:click={() => kill(selectedIntruder.id)}>Kill</button
-				>
-				<button
-					class="py-1 px-2 border border-yellow-700 bg-slate-900 radius"
-					on:click={() => returnToBag(selectedIntruder.id)}>Return to bag</button
-				>
-			</div>
-		</div>
-	{/if}
+		{/if}
+	{/key}
 </Modal>
 
 <style>

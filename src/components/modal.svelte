@@ -75,13 +75,6 @@
 		@apply p-0 border border-slate-800;
 	}
 
-	dialog > div > div {
-		/* background-color: #000000;
-		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 2000 1500'%3E%3Cdefs%3E%3CradialGradient id='a' gradientUnits='objectBoundingBox'%3E%3Cstop offset='0.9' stop-color='%23640062' stop-opacity='0'/%3E%3Cstop offset='1' stop-color='%23640062' stop-opacity='0.2'/%3E%3C/radialGradient%3E%3ClinearGradient id='c' x1='1' y1='0' x2='0' y2='0' gradientTransform='rotate(0,0.5,0.5)'%3E%3Cstop offset='0' stop-color='%23000000'/%3E%3Cstop offset='.5' stop-color='%23000000'/%3E%3Cstop offset='1' stop-color='%23000000'/%3E%3C/linearGradient%3E%3Cg id='b' fill='url(%23a)' %3E%3Ccircle cx='1560' cy='1560' r='2500'/%3E%3Ccircle cx='1520' cy='1520' r='2450'/%3E%3Ccircle cx='1480' cy='1480' r='2400'/%3E%3Ccircle cx='1440' cy='1440' r='2350'/%3E%3Ccircle cx='1400' cy='1400' r='2300'/%3E%3Ccircle cx='1360' cy='1360' r='2250'/%3E%3Ccircle cx='1320' cy='1320' r='2200'/%3E%3Ccircle cx='1280' cy='1280' r='2150'/%3E%3Ccircle cx='1240' cy='1240' r='2100'/%3E%3Ccircle cx='1200' cy='1200' r='2050'/%3E%3Ccircle cx='1160' cy='1160' r='2000'/%3E%3Ccircle cx='1120' cy='1120' r='1950'/%3E%3Ccircle cx='1080' cy='1080' r='1900'/%3E%3Ccircle cx='1040' cy='1040' r='1850'/%3E%3Ccircle cx='1000' cy='1000' r='1800'/%3E%3Ccircle cx='960' cy='960' r='1750'/%3E%3Ccircle cx='920' cy='920' r='1700'/%3E%3Ccircle cx='880' cy='880' r='1650'/%3E%3Ccircle cx='840' cy='840' r='1600'/%3E%3Ccircle cx='800' cy='800' r='1550'/%3E%3Ccircle cx='760' cy='760' r='1500'/%3E%3Ccircle cx='720' cy='720' r='1450'/%3E%3Ccircle cx='680' cy='680' r='1400'/%3E%3Ccircle cx='640' cy='640' r='1350'/%3E%3Ccircle cx='600' cy='600' r='1300'/%3E%3Ccircle cx='560' cy='560' r='1250'/%3E%3Ccircle cx='520' cy='520' r='1200'/%3E%3Ccircle cx='480' cy='480' r='1150'/%3E%3Ccircle cx='440' cy='440' r='1100'/%3E%3Ccircle cx='400' cy='400' r='1050'/%3E%3Ccircle cx='360' cy='360' r='1000'/%3E%3Ccircle cx='320' cy='320' r='950'/%3E%3Ccircle cx='280' cy='280' r='900'/%3E%3Ccircle cx='240' cy='240' r='850'/%3E%3Ccircle cx='200' cy='200' r='800'/%3E%3Ccircle cx='160' cy='160' r='750'/%3E%3Ccircle cx='120' cy='120' r='700'/%3E%3Ccircle cx='80' cy='80' r='650'/%3E%3Ccircle cx='40' cy='40' r='600'/%3E%3Ccircle cx='0' cy='0' r='550'/%3E%3C/g%3E%3C/defs%3E%3Crect fill='url(%23c)' width='2000' height='1500'/%3E%3Cg %3E%3Cuse href='%23b' x='-500' y='-1000' /%3E%3Cuse href='%23b' x='-2500' y='-1000' transform='scale(-1 1)'/%3E%3C/g%3E%3C/svg%3E");
-		background-attachment: fixed;
-		background-size: cover; */
-	}
-
 	dialog[open]:not(.close) {
 		animation: myFadeIn 0.2s ease normal;
 		animation-iteration-count: 1;
